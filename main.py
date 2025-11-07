@@ -19,6 +19,8 @@ django.setup()
 # Import your models for use in your script
 from db.models import *
 
+import tkinter as tk
+
 ############################################################################
 ## START OF APPLICATION
 ############################################################################
@@ -48,3 +50,28 @@ Product.objects.create(UPC='21334', Name='Cheese', Price=3.25)
 
 for u in Product.objects.all():
     print(f'ID: {u.id} \tProductname: {u.Name}')
+
+def scan_product(): 
+    scanned_upc = upc_var.get()
+    print(scanned_upc)
+
+root = tk.Tk()
+root.title("My First Tkinter App")
+root.geometry("500x200")
+
+upc_var = tk.StringVar()
+
+upc_label = tk.Label(root, text="Enter UPC")
+upc_entry = tk.Entry(root, textvariable=upc_var)
+
+scan_button = tk.Button(root, text="Scan/Submit", command=scan_product)
+
+upc_label.grid(row=1, column=0, padx=5, pady=5)
+upc_entry.grid(row=1, column=1, padx=5, pady=5)
+
+scan_button.grid(row=2, column=0, columnspan=2, pady=10)
+
+
+
+root.mainloop()
+
