@@ -51,18 +51,73 @@ Product.objects.create(UPC='21334', Name='Cheese', Price=3.25)
 for u in Product.objects.all():
     print(f'ID: {u.id} \tProductname: {u.Name}')
 
+    i = 3
+
+
+p =10
 def scan_product(): 
+
+    global p
+
+
     scanned_upc = upc_var.get()
-    print(scanned_upc)
+    product_obj = Product.objects.filter(UPC=scanned_upc).first()
+
+    if product_obj:
+        # product_obj is now a single Product instance (or None if not found)
+        prodPrice = product_obj.Price
+        prodName = product_obj.Name
+        print(f"Found Product: {prodName} | Price: {prodPrice}")
+        receiptLineText = prodName + " $" + str(prodPrice) + " " + scanned_upc
+        receiptLine_label = tk.Label(root, text=receiptLineText)
+
+        receiptLine_label.grid(row=p, column=0, padx=5, pady=5)
+        p = p +1
+
+    else:
+        # Handle the case where no product was found
+        print(f"Error: No product found for UPC {scanned_upc}.")
+        
+
+
+        
+
+
+def scan_product2(): 
+
+
+
+    scanned_upc = upc_var.get()
+
+    product_obj = Product.objects.filter(UPC=scanned_upc).first
+    
+    if product_obj:
+        prodPrice = product_obj.Price
+        prodName = product_obj.Name
+        print(f"Found Product: {prodName} | Price: {prodPrice}")
+    
+
+        receiptLineText = prodName + " $" + prodPrice + " " + scanned_upc
+        receiptLine_label = tk.Label(root, text=receiptLineText)
+
+        receiptLine_label.grid(row=i, column=0, padx=5, pady=5)
+        i = i +1
+
+
+
+    
+    
+total = 0
 
 root = tk.Tk()
-root.title("My First Tkinter App")
-root.geometry("500x200")
+root.title("Cash Register")
+root.geometry("500x2000")
 
 upc_var = tk.StringVar()
 
 upc_label = tk.Label(root, text="Enter UPC")
 upc_entry = tk.Entry(root, textvariable=upc_var)
+
 
 scan_button = tk.Button(root, text="Scan/Submit", command=scan_product)
 
@@ -74,4 +129,3 @@ scan_button.grid(row=2, column=0, columnspan=2, pady=10)
 
 
 root.mainloop()
-
