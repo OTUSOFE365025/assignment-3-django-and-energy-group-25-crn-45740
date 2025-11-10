@@ -55,6 +55,7 @@ This repository demonstrates using the Django ORM outside of a typical Django we
 
 ## File Structure
 ---------------------------------
+```
 django-orm/
 ├── db/
 │   ├── __init__.py
@@ -63,7 +64,7 @@ django-orm/
 ├── manage.py
 ├── README.md
 └── settings.py
-
+```
 
 
 
