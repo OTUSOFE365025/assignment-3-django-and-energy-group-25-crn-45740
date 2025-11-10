@@ -54,78 +54,61 @@ for u in Product.objects.all():
     i = 3
 
 
-p =10
+
+total = 0.00
+rowHeight =4
+
 def scan_product(): 
 
-    global p
+    global rowHeight
+    global total
 
 
     scanned_upc = upc_var.get()
     product_obj = Product.objects.filter(UPC=scanned_upc).first()
 
     if product_obj:
-        # product_obj is now a single Product instance (or None if not found)
         prodPrice = product_obj.Price
         prodName = product_obj.Name
-        print(f"Found Product: {prodName} | Price: {prodPrice}")
-        receiptLineText = prodName + " $" + str(prodPrice) + " " + scanned_upc
+        total = total + prodPrice
+        #print(f"Found Product: {prodName} | Price: {prodPrice}")
+        receiptLineText = prodName + "\t\t\t$" + str(prodPrice) + "\t\t\t" + scanned_upc
         receiptLine_label = tk.Label(root, text=receiptLineText)
 
-        receiptLine_label.grid(row=p, column=0, padx=5, pady=5)
-        p = p +1
+        receiptLine_label.grid(row=rowHeight, column=0, padx=5, pady=5)
+        
+
+        totalText = "TOTAL:\t\t\t\t\t\t$" + str(total)
+        totalLine_label = tk.Label(root, text=totalText)
+        totalLine_label.grid(row=rowHeight+ 1, column=0, padx=5, pady=5)
+
+        rowHeight = rowHeight +1
+
+        
 
     else:
-        # Handle the case where no product was found
         print(f"Error: No product found for UPC {scanned_upc}.")
-        
-
-
-        
-
-
-def scan_product2(): 
-
-
-
-    scanned_upc = upc_var.get()
-
-    product_obj = Product.objects.filter(UPC=scanned_upc).first
-    
-    if product_obj:
-        prodPrice = product_obj.Price
-        prodName = product_obj.Name
-        print(f"Found Product: {prodName} | Price: {prodPrice}")
-    
-
-        receiptLineText = prodName + " $" + prodPrice + " " + scanned_upc
-        receiptLine_label = tk.Label(root, text=receiptLineText)
-
-        receiptLine_label.grid(row=i, column=0, padx=5, pady=5)
-        i = i +1
-
-
-
-    
-    
-total = 0
 
 root = tk.Tk()
 root.title("Cash Register")
-root.geometry("500x2000")
+root.geometry("500x800")
 
 upc_var = tk.StringVar()
 
+root.grid_columnconfigure(2, weight=1)
+
 upc_label = tk.Label(root, text="Enter UPC")
 upc_entry = tk.Entry(root, textvariable=upc_var)
+scan_button = tk.Button(root, text="Scan", command=scan_product)
+receiptHeader_label = tk.Label(root, text="Product\t\t\tPrice\t\t\tUPC")
 
 
-scan_button = tk.Button(root, text="Scan/Submit", command=scan_product)
-
-upc_label.grid(row=1, column=0, padx=5, pady=5)
-upc_entry.grid(row=1, column=1, padx=5, pady=5)
-
-scan_button.grid(row=2, column=0, columnspan=2, pady=10)
-
-
+upc_label.grid(row=1, column=0, padx=5, pady=5, sticky="w")
+upc_entry.grid(row=2, column=0, padx=5, pady=5, sticky="w")
+scan_button.grid(row=2, column=2, columnspan=2, pady=10, sticky="e")
+receiptHeader_label.grid(row=3, column=0, columnspan=5, padx=5, pady=5, sticky="w")
 
 root.mainloop()
+
+
+
