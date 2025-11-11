@@ -65,7 +65,12 @@ django-orm/
 ├── README.md
 └── settings.py
 ```
+## Screen Dumps
 
+<img width="310" height="435" alt="image" src="https://github.com/user-attachments/assets/75edee6d-e81b-4bdd-a8c1-f8c684141ab8" />
+
+
+<img width="310" height="435" alt="image" src="https://github.com/user-attachments/assets/c8471162-8f24-48b6-a143-9a3394cd4277" />
 
 
 
