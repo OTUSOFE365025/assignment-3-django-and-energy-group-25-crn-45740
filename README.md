@@ -1,19 +1,59 @@
-Django ORM Standalone
-=====================
+# Assignment 3 - SOFE 3650U
 
-![Django](https://img.shields.io/badge/Django_ORM-Standalone-blue)
-![Python](https://img.shields.io/badge/Python-yellow)
+## Team Members
+* **Zachary Matasic**
+* **Mohamed Tawfik Omar**
+* **Nithusan Kandasamy**
 
-Use the database components of Django without having to use the rest of Django (i.e. running a web server)! :tada: A typical use case for using this template would be if you are writing a python script and you would like the database functionality provided by Django, but have no need for the request/response functionalty of a client/server web application that Django also provides. 
+---
 
-With this project template you can write regular python scripts and use Django's excellent ORM functionality with the database backend of your choice. This makes it convienient for Djangonauts to write database driven python applications with the familiar and well polished Django ORM. Enjoy.
+## Description
+This project is a desktop cash register application built with Python. It uses **Tkinter** for the graphical user interface (GUI) and leverages the **Django ORM (Object-Relational Mapper)** as a standalone component to manage the product database.
 
-:gear: Requirements
--------------------
-- Last tested successfully with Python 3.10.4 and Django 5.0.6
-- Create venv and pip install django to import the required modules.
+---
 
-:open_file_folder: File Structure
+## How to Run
+
+1.  **Set up the database:**
+    Before running the main application, you must create the database tables from the models.
+    ```bash
+    # Create the migration files (if not already done)
+    python manage.py makemigrations db
+    
+    # Apply the migrations to create the database tables
+    python manage.py migrate
+    ```
+
+2.  **Run the application:**
+    Once the database is set up, you can run the Tkinter application.
+    ```bash
+    python main.py
+    ```
+    The application will launch a GUI window. The `main.py` script will also automatically seed the database with 19 sample products every time it starts.
+
+---
+
+## Code Overview & ORM Implementation
+
+This repository demonstrates using the Django ORM outside of a typical Django web server. A review of the code clearly shows this separation.
+
+* `main.py`:
+    * This is the main executable for the project.
+    * **GUI:** It builds the **Tkinter** interface (the cash register window, UPC entry, and scan button).
+    * **Django Setup:** At the top of the file, it manually initializes the Django environment (`os.environ.setdefault`, `django.setup()`) to enable use of the ORM.
+    * **ORM in Action (Create):** On launch, the script seeds the database using `Product.objects.create(...)` to add numerous sample products.
+    * **ORM in Action (Query):** The `scan_product()` function is tied to the "Scan" button. It gets the text from the UPC entry and executes the query `Product.objects.filter(UPC=scanned_upc).first()` to find a matching product in the database.
+
+* `db/models.py`:
+    * This file is the core of the ORM. It defines the `Product` model, which inherits from `django.db.models.Model`.
+    * The Django ORM uses this Python class to automatically create and manage the `Product` table in the database.
+
+* `manage.py` & `settings.py`:
+    * These are standard Django files. `settings.py` defines the database connection and lists `db` as an `INSTALLED_APP`. `manage.py` is the command-line utility used to run database migrations.
+
+---
+
+## File Structure
 ---------------------------------
 ```
 django-orm/
@@ -25,77 +65,13 @@ django-orm/
 ├── README.md
 └── settings.py
 ```
+## Screen Dumps
 
-__The main.py file is the entry point for the project, and where you start your code. You automatically get access to your models via ```from db.models import *```
-Think of it like a plain old python file, but now with the addition of Django's feature-rich models.__ :smiling_face_with_three_hearts:
+<img width="310" height="435" alt="image" src="https://github.com/user-attachments/assets/75edee6d-e81b-4bdd-a8c1-f8c684141ab8" />
 
-__The db/models.py is where you configure your typical Django models.__ There is a toy user model included as a simple example. After running the migrations command in the quick setup below, a db.sqlite3 file will be generated. The settings.py file is where can swap out the sqlite3 database for another database connection, such as Postgres or AmazonRDS, if you wish. For most applications, sqlite3 will be powerful enough. But if you need to swap databases down the road, you can easily do so, which is one of the benefits of using the Django ORM. 
 
-:rocket: Quick Setup
---------------------
-Create a folder for your project on your local machine
-```
-mkdir myproject; cd myproject
-```
-Create a virtual environment and install django
-```
-python -m venv venv; source venv/bin/activate; pip install django
-```
-Download this project template from GitHub
-```
-git clone git@github.com:dancaron/Django-ORM.git; cd Django-ORM
-```
-Initialize the database
-```
-python manage.py makemigrations db; python manage.py migrate
-```
-Run the project
-```
-python main.py
-```
+<img width="310" height="435" alt="image" src="https://github.com/user-attachments/assets/c8471162-8f24-48b6-a143-9a3394cd4277" />
 
-Feel free to send pull requests if you want to improve this project.
 
-:crystal_ball: Example
-----------------------
-After running Quick Start above: 
 
-Code in db/models.py:
-```
-# Sample User model
-class User(models.Model):
-    name = models.CharField(max_length=50, default='Dan')
 
-    def __str__(self):
-        return self.name
-```
-Code in main.py:
-```
-# Seed a few users in the database
-User.objects.create(name='Dan')
-User.objects.create(name='Robert')
-
-for u in User.objects.all():
-    print(f'ID: {u.id} \tUsername: {u.name}')
-```
-Output from command: ```python main.py```
-```
-ID: 1	Username: Dan
-ID: 2	Username: Robert
-```
-
-:mortar_board: Django Models
-----------------------------
-
-Link: [How to Use Django Models](https://docs.djangoproject.com/en/3.1/topics/db/models/)
-
-License
--------
-
-The MIT License (MIT) Copyright (c) 2024 Dan Caron
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

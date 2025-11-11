@@ -8,9 +8,11 @@ except Exception:
 
 
 # Sample User model
-class User(models.Model):
-    name = models.CharField(max_length=50, default="Dan")
+class Product(models.Model):
+    UPC = models.CharField(max_length=5, default=00000)
+    Name = models.CharField(max_length=50, default="Cheese")
+    Price = models.FloatField(default=0.0)
 
-    def __str__(self):
-        return self.name
-
+def __str__(self):
+        return f"{self.Name} ({self.UPC})"
+    
